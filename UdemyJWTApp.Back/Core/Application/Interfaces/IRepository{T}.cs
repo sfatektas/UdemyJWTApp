@@ -9,6 +9,8 @@ namespace UdemyJWTApp.Back.Core.Application.Interfaces
 
         Task<List<T>> GetByFilterAsync(Expression<Func<T,bool>> filter);
 
+        Task<T> GetOneByFileterAsync(Expression<Func<T, bool>> filter);
+
         Task<T> GetByIdAsync(int id);
 
         Task CreateEntity(T entity);

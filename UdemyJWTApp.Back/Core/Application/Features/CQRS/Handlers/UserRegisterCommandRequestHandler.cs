@@ -8,16 +8,16 @@ namespace UdemyJWTApp.Back.Core.Application.Features.CQRS.Handlers
 {
     public class UserRegisterCommandRequestHandler : IRequestHandler<UserRegisterCommandRequest>
     {
-        private readonly IRepository<AppUser> _repository;
+        private readonly IUow _uow;
 
-        public UserRegisterCommandRequestHandler(IRepository<AppUser> repository)
+        public UserRegisterCommandRequestHandler(IUow uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
         public async Task<Unit> Handle(UserRegisterCommandRequest request, CancellationToken cancellationToken)
         {
-            await _repository.CreateEntity(new AppUser()
+            await _uow.GetRepository<AppUser>().CreateEntity(new AppUser()
             {
                 Name = request.Name,
                 Surname = request.Surname,

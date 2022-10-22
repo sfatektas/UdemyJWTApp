@@ -9,18 +9,19 @@ namespace UdemyJWTApp.Back.Core.Application.Features.CQRS.Handlers
 {
     public class UpdateCategoryCommandRequestHandler : IRequestHandler<UpdateCategoryCommandRequest, UpdateCategoryCommandResult>
     {
-        private readonly IRepository<Category> _repository;
         private readonly IMapper _mapper;
+        private readonly IUow _uow;
 
-        public UpdateCategoryCommandRequestHandler(IRepository<Category> repository, IMapper mapper)
+        public UpdateCategoryCommandRequestHandler(IMapper mapper, IUow uow)
         {
-            _repository = repository;
             _mapper = mapper;
+            _uow = uow;
         }
 
         public async Task<UpdateCategoryCommandResult> Handle(UpdateCategoryCommandRequest request, CancellationToken cancellationToken)
         {
-           await _repository.UpdateEntity(_mapper.Map<Category>(request));
+            await _uow.GetRepository<Category>().UpdateEntity(_mapper.Map<Category>(request));
+            await _uow.SaveChangesAsync();
             return new(ResponseType.Success);
         }
     }

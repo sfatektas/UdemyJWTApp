@@ -7,16 +7,17 @@ namespace UdemyJWTApp.Back.Core.Application.Features.CQRS.Handlers
 {
     public class DeleteProductCommandRequestHandler : IRequestHandler<DeleteProudctCommandRequest>
     {
-        private readonly IRepository<Product> _repository;
+        private readonly IUow _uow;
 
-        public DeleteProductCommandRequestHandler(IRepository<Product> repository)
+        public DeleteProductCommandRequestHandler(IUow uow)
         {
-            _repository = repository;
+            _uow = uow;
         }
 
         public async Task<Unit> Handle(DeleteProudctCommandRequest request, CancellationToken cancellationToken)
         {
-            await _repository.Remove(request.Id);
+            await _uow.GetRepository<Product>().Remove(request.Id);
+            await _uow.SaveChangesAsync();
             return Unit.Value;
         }
     }

@@ -6,6 +6,8 @@
 
         public string? Surname  { get; set; }
 
+        public string? UserName { get; set; } = string.Empty;
+
         public string? PhoneNumber { get; set; }
 
         public string? Password { get; set; }

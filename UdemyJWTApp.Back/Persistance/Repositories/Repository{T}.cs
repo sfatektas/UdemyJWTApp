@@ -30,6 +30,14 @@ namespace UdemyJWTApp.Back.Persistance.Repositories
             return await _context.Set<T>().Where(filter).ToListAsync();
         }
 
+        public async Task<T> GetOneByFileterAsync(Expression<Func<T, bool>> filter)
+        {
+            var entity = await _context.Set<T>().SingleOrDefaultAsync(filter);
+            if (entity != null)
+                return entity;
+            return new T();
+        }
+
         public async Task<T> GetByIdAsync(int id)
         {
             var result = await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id);

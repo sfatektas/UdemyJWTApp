@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UdemyJWTApp.Back.Persistance.Context;
 
@@ -10,9 +11,10 @@ using UdemyJWTApp.Back.Persistance.Context;
 namespace UdemyJWTApp.Back.Persistance.Migrations
 {
     [DbContext(typeof(UdemyJWTDbContext))]
-    partial class UdemyJWTDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221022140235_Usernameadded")]
+    partial class Usernameadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

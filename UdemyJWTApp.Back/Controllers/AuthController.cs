@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UdemyJWTApp.Back.Core.Application.Features.CQRS.Commands;
+using UdemyJWTApp.Back.Core.Application.Features.CQRS.Queries;
 
 namespace UdemyJWTApp.Back.Controllers
 {
@@ -21,6 +22,15 @@ namespace UdemyJWTApp.Back.Controllers
         {
             await _mediator.Send(cmnd);
             return Ok();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Check(CheckUserQueryRequest request)
+        {
+            var response = await _mediator.Send(request);
+            if (response.IsExist)
+                return Ok(response);
+            return BadRequest("Kullanıcı Adı veya şifre yanlış.");
         }
     }
 }

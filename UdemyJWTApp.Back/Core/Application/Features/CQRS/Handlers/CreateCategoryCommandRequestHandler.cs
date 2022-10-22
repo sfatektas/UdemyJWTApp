@@ -8,17 +8,19 @@ namespace UdemyJWTApp.Back.Core.Application.Features.CQRS.Handlers
 {
     public class CreateCategoryCommandRequestHandler : IRequestHandler<CreateCategoryCommandRequest>
     {
-        private readonly IRepository<Category> _repository;
         private readonly IMapper _mapper;
-        public CreateCategoryCommandRequestHandler(IRepository<Category> repository, IMapper mapper)
+        private readonly IUow _uow;
+
+        public CreateCategoryCommandRequestHandler(IMapper mapper, IUow uow)
         {
-            _repository = repository;
             _mapper = mapper;
+            _uow = uow;
         }
 
         public async Task<Unit> Handle(CreateCategoryCommandRequest request, CancellationToken cancellationToken)
         {
-            await _repository.CreateEntity(_mapper.Map<Category>(request));   
+            await _uow.GetRepository<Category>().CreateEntity(_mapper.Map<Category>(request));   
+            await _uow.SaveChangesAsync();
             return Unit.Value;
         }
     }

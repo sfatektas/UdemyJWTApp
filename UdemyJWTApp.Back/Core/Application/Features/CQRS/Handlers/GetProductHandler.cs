@@ -9,18 +9,18 @@ namespace UdemyJWTApp.Back.Core.Application.Features.CQRS.Handlers
 {
     public class GetProductHandler : IRequestHandler<GetProductQuery, ProductListDto>
     {
-        private readonly IRepository<Product> _repository;
         private readonly IMapper _mapper;
+        private readonly IUow _uow;
 
-        public GetProductHandler(IRepository<Product> repository, IMapper mapper)
+        public GetProductHandler(IMapper mapper, IUow uow)
         {
-            _repository = repository;
             _mapper = mapper;
+            _uow = uow;
         }
 
         public async Task<ProductListDto> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
-            return _mapper.Map<ProductListDto> (await _repository.GetByIdAsync(request.Id));
+            return _mapper.Map<ProductListDto> (await _uow.GetRepository<Product>().GetByIdAsync(request.Id));
         }
     }
 }

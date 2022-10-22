@@ -8,18 +8,19 @@ namespace UdemyJWTApp.Back.Core.Application.Features.CQRS.Handlers
 {
     public class CreateProductCommandRequestHandler : IRequestHandler<CreateProductCommandRequest>
     {
-        private readonly IRepository<Product> _repository;
         private readonly IMapper _mapper;
+        private readonly IUow _uow;
 
-        public CreateProductCommandRequestHandler(IRepository<Product> repository, IMapper mapper)
+        public CreateProductCommandRequestHandler(IMapper mapper, IUow uow)
         {
-            _repository = repository;
             _mapper = mapper;
+            _uow = uow;
         }
 
         public async Task<Unit> Handle(CreateProductCommandRequest request, CancellationToken cancellationToken)
         {
-            await _repository.CreateEntity(_mapper.Map<Product>(request));
+            await _uow.GetRepository<Product>().CreateEntity(_mapper.Map<Product>(request));
+            await _uow.SaveChangesAsync();
             return Unit.Value;
         }
     }
