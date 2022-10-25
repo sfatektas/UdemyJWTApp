@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UdemyJWTApp.Back.Core.Application.Dto;
@@ -8,6 +10,7 @@ using UdemyJWTApp.Back.Core.Application.Features.CQRS.Queries;
 
 namespace UdemyJWTApp.Back.Controllers
 {
+    [EnableCors("JwtTokenPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -20,9 +23,11 @@ namespace UdemyJWTApp.Back.Controllers
             _mediator = mediator;
             _mapper = mapper;
         }
+        [Authorize(Roles ="Member")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            var request = Request;
             var data = await _mediator.Send(new GetAllCategoriesQuery());
             return Ok(data);
         }

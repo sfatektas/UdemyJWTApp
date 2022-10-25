@@ -1,12 +1,16 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using UdemyJWTApp.Back.Core.Application.Features.CQRS.Commands;
 using UdemyJWTApp.Back.Core.Application.Features.CQRS.Queries;
+using UdemyJWTApp.Back.Infrastructure.Tools;
 
 namespace UdemyJWTApp.Back.Controllers
 {
-    [ApiController]
+    [EnableCors("JwtTokenPolicy")]
     [Route("api/[controller]")]
+    [ApiController]
+
 
     public class AuthController : ControllerBase
     {
@@ -25,11 +29,14 @@ namespace UdemyJWTApp.Back.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Check(CheckUserQueryRequest request)
+        public async Task<IActionResult> SignIn(CheckUserQueryRequest request)
         {
             var response = await _mediator.Send(request);
             if (response.IsExist)
-                return Ok(response);
+            {
+                var token = JwtTokenGenerator.GenerateToken(response);
+                return Created("",token);
+            }
             return BadRequest("Kullanıcı Adı veya şifre yanlış.");
         }
     }
