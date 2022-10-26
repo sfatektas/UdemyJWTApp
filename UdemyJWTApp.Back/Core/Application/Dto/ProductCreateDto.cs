@@ -2,7 +2,7 @@
 {
     public class ProductCreateDto
     {
-        public string? Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public int Stock { get; set; }
 

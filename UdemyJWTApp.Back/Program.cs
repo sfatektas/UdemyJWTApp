@@ -1,4 +1,5 @@
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -6,8 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
+using UdemyJWTApp.Back.Core.Application.Dto;
 using UdemyJWTApp.Back.Core.Application.Interfaces;
 using UdemyJWTApp.Back.Core.Application.Mapping;
+using UdemyJWTApp.Back.Core.Application.ValidationRules.CategoryRules;
+using UdemyJWTApp.Back.Core.Application.ValidationRules.ProductRules;
 using UdemyJWTApp.Back.Infrastructure.Tools;
 using UdemyJWTApp.Back.Persistance.Context;
 using UdemyJWTApp.Back.Persistance.Repositories;
@@ -28,6 +32,10 @@ x.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"))
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());//Neden Assembly probu geçildiðini  bilmeden kullanýyorum !!!
 builder.Services.AddScoped<IUow, Uow>();
+builder.Services.AddScoped<IValidator<ProductCreateDto>, CreateProductRule>();
+builder.Services.AddScoped<IValidator<ProductUpdateDto>, UpdateProductRule>();
+builder.Services.AddScoped<IValidator<CategoryCreateDto>, CreateCategoryRule>();
+builder.Services.AddScoped<IValidator<CategoryUpdateDto>, UpdateCategoryRule>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
