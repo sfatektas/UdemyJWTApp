@@ -65,6 +65,11 @@ namespace UdemyJWTApp.Back.Controllers
             }
             return BadRequest(result.GetErrorMessages());
         }
-
+        [HttpGet("{id}/Products")]
+        public async Task<IActionResult> CategoriesWithProducts(int id)
+        {
+            var data = await _mediator.Send(new GetCategoriesWithProductsQuery(id));
+            return Ok(data);
+        }
     }
 }
