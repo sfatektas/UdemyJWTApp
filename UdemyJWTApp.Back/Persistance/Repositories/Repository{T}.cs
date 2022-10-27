@@ -17,7 +17,7 @@ namespace UdemyJWTApp.Back.Persistance.Repositories
         public async Task CreateEntity(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
         }
 
         public async Task<List<T>> GetAllAsync()
@@ -48,7 +48,7 @@ namespace UdemyJWTApp.Back.Persistance.Repositories
         {
             var entity = await this.GetByIdAsync(id);
              _context.Remove(entity);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
         }
 
@@ -56,7 +56,7 @@ namespace UdemyJWTApp.Back.Persistance.Repositories
         {
             var unchanged = await this.GetByIdAsync(entity.Id);
             _context.Entry(unchanged).CurrentValues.SetValues(entity);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
         }
     }
 }
