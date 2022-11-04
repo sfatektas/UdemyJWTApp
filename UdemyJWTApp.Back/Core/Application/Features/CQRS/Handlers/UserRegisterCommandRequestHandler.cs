@@ -23,7 +23,8 @@ namespace UdemyJWTApp.Back.Core.Application.Features.CQRS.Handlers
                 Surname = request.Surname,
                 Password = request.Password,
                 AppRoleId = (int)RoleType.Member,
-                PhoneNumber = request.PhoneNumber
+                PhoneNumber = request.PhoneNumber,
+                UserName = request.Username
             });
             return Unit.Value;
         }
