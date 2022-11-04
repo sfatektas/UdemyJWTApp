@@ -1,0 +1,20 @@
+﻿
+@{
+    Layout = "_Layout";
+}
+
+@model UserLoginModel
+
+<form asp-action="Login" asp-controller="Account" method="post" class="container">
+        <div class="form-group">
+            <label >Kullanıcı Adı:</label>
+            <input asp-for="@Model.Username" type="text" class="form-control" placeholder="Enter username..">
+        </div>
+        <div class="form-group">
+            <label >Parola:</label>
+            <input asp-for="@Model.Password" type="password" class="form-control"  placeholder="Parola..">
+        </div>
+        <div class="text-danger" asp-validation-summary="All"></div>
+        <button type="submit" class="btn btn-primary">Login</button>
+
+</form>

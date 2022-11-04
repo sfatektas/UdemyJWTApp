@@ -19,7 +19,7 @@ namespace UdemyJWTApp.Back.Infrastructure.Tools
             claims.Add(new Claim(ClaimTypes.Role, dto.Role)); // ? role diziside verilebilir.
             claims.Add(new Claim(ClaimTypes.Name, dto.Username));
 
-            var expires = DateTime.UtcNow.AddMinutes(1/*JwtTokenSettings.Expires*/);
+            var expires = DateTime.UtcNow.AddMinutes(30/*JwtTokenSettings.Expires*/);
 
             //SigningCredeantial proportysi geçilmez ise token doğrulaması çalışmıyor. !!!!!!!!!!!!!!!!!!
 

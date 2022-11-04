@@ -18,5 +18,7 @@ namespace UdemyJWTApp.Back.Core.Application.Interfaces
         Task UpdateEntity(T entity);
 
         Task Remove(int id);
+
+        IQueryable<T> GetQueryable();
     }
 }

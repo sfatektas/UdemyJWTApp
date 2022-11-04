@@ -6,11 +6,13 @@ using UdemyJWTApp.Back.Core.Application.Features.CQRS.Commands;
 using AutoMapper;
 using FluentValidation;
 using UdemyJWTApp.Back.Core.Application.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UdemyJWTApp.Back.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IMediator _mediator;
@@ -39,6 +41,7 @@ namespace UdemyJWTApp.Back.Controllers
                 return NotFound();
             return Ok(data);
         }
+        [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> RemoveById(int id)
@@ -46,6 +49,7 @@ namespace UdemyJWTApp.Back.Controllers
             await _mediator.Send(new DeleteProudctCommandRequest(id));
             return NoContent();
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpPost]
         public async Task<IActionResult> Create(ProductCreateDto dto)
@@ -59,6 +63,7 @@ namespace UdemyJWTApp.Back.Controllers
             }
             return BadRequest(result.GetErrorMessages());
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpPut]
         public async Task<IActionResult> Update(ProductUpdateDto dto)

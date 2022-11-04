@@ -1,0 +1,38 @@
+﻿@model List<ProductListModel>
+@{
+    Layout = "_Layout";
+}
+
+<div class="container">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Stock</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <th scope="row">#</th>
+                    <td>@product.Description</td>
+                    <td>@product.Price</td>
+                    <td>@product.Stock</td>
+                    @{
+                        if(User.IsInRole("Admin"))
+                        {
+                            <td><a asp-action="Remove" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-primary">Delete</a></td>
+                            <td><a asp-action="Update" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-primary">Update</a></td>
+                        }
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

@@ -4,7 +4,6 @@
     {
         public string? Description { get; set; }
 
-        public List<Product> Products { get; set; } = new List<Product>();
-
+        public List<Product> Products { get; set; }
     }
 }

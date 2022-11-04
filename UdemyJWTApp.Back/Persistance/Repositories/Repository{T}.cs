@@ -47,7 +47,10 @@ namespace UdemyJWTApp.Back.Persistance.Repositories
         public async Task Remove(int id)
         {
             var entity = await this.GetByIdAsync(id);
-             _context.Remove(entity);
+            if (entity != null)
+            {
+                _context.Remove(entity);
+            }
             //await _context.SaveChangesAsync();
 
         }
@@ -57,6 +60,11 @@ namespace UdemyJWTApp.Back.Persistance.Repositories
             var unchanged = await this.GetByIdAsync(entity.Id);
             _context.Entry(unchanged).CurrentValues.SetValues(entity);
             //await _context.SaveChangesAsync();
+        }
+
+        public IQueryable<T> GetQueryable()
+        {
+            return _context.Set<T>().AsQueryable();
         }
     }
 }

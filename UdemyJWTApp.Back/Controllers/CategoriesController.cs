@@ -15,6 +15,7 @@ namespace UdemyJWTApp.Back.Controllers
     [EnableCors("JwtTokenPolicy")]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -29,13 +30,11 @@ namespace UdemyJWTApp.Back.Controllers
             _createValidator = createValidator;
             _updateValidator = updateValidator;
         }
-        [Authorize(Roles ="Member")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var request = Request;
             var data = await _mediator.Send(new GetAllCategoriesQuery());
-            return Ok(data);
+            return Ok(data.Where(x=>x.Description!=null));
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -43,6 +42,7 @@ namespace UdemyJWTApp.Back.Controllers
             var data = await _mediator.Send(new GetCategoryQuery( id));
             return Ok(data);
         }
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(CategoryCreateDto dto)
         {
@@ -54,6 +54,8 @@ namespace UdemyJWTApp.Back.Controllers
             }
             return BadRequest(result.GetErrorMessages());
         }
+        [Authorize(Roles = "Admin")]
+
         [HttpPut]
         public async Task<IActionResult> Update(CategoryUpdateDto dto)
         {
@@ -70,6 +72,13 @@ namespace UdemyJWTApp.Back.Controllers
         {
             var data = await _mediator.Send(new GetCategoriesWithProductsQuery(id));
             return Ok(data);
+        }
+        [Authorize(Roles ="Admin")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            await _mediator.Send(new DeleteCategoryCommandRequest(id));
+            return NoContent();
         }
     }
 }
